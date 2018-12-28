@@ -45,3 +45,10 @@ cv2.drawContours(image, [NumberPlateCnt], -1, (0,255,0), 3)
 cv2.imshow("Final Image With Number Plate Detected", image)
 
 cv2.waitKey(0) #Wait for user input before closing the images displayed
+
+def start():
+    print("Start...")
+
+
+if __name__=='__main__':
+    start()
