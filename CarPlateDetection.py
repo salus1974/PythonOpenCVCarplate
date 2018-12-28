@@ -1,8 +1,18 @@
 import numpy as np
 import cv2
 import imutils
+import datetime
 
 # TODO: How How ;-)
+
+class Test:
+   def __init__(self):
+       self.currentDT = datetime.datetime.now()
+   def start(self):
+       print("*******************************")
+       print("**                             ")
+       print("** Start...", self.currentDT)
+       print("**                             ")
 
 # Read the image file
 image = cv2.imread('Car_Image_1.jpg')
@@ -46,9 +56,7 @@ cv2.imshow("Final Image With Number Plate Detected", image)
 
 cv2.waitKey(0) #Wait for user input before closing the images displayed
 
-def start():
-    print("Start...")
-
 
 if __name__=='__main__':
-    start()
+    cpd=Test()
+    cpd.start()
