@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
-import  imutils
+import imutils
+
+# TODO: How How ;-)
 
 # Read the image file
 image = cv2.imread('Car_Image_1.jpg')
