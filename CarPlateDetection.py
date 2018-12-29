@@ -30,9 +30,37 @@ class CarPlateDetection:
        print("**                             ")
        print("** ESC - ends app               ")
        print("**                             ")
-       while True:
-           if cv.waitKey(10) == 27:
+
+   def procImage(self, frame):
+       self.image=frame
+       # Display the original image
+       cv.imshow("Original Image", self.image)
+       # RGB to Gray scale conversion
+       gray = cv.cvtColor(self.image, cv.COLOR_BGR2GRAY)
+       cv.imshow("1 - Grayscale Conversion", gray)
+       # Noise removal with iterative bilateral filter(removes noise while preserving edges)
+       gray = cv.bilateralFilter(gray, 11, 17, 17)
+       cv.imshow("2 - Bilateral Filter", gray)
+       # Find Edges of the grayscale image
+       edged = cv.Canny(gray, 170, 200)
+       cv.imshow("4 - Canny Edges", edged)
+       # Find contours based on Edges
+       (new, cnts, _) = cv.findContours(edged.copy(), cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
+       cnts = sorted(cnts, key=cv.contourArea, reverse=True)[
+              :30]  # sort contours based on their area keeping minimum required area as '30' (anything smaller than this will not be considered)
+       # loop over our contours to find the best possible approximate contour of number plate
+       count = 0
+       for c in cnts:
+           peri = cv.arcLength(c, True)
+           approx = cv.approxPolyDP(c, 0.02 * peri, True)
+           if len(approx) == 4:  # Select the contour with 4 corners
+               self.numberPlateCnt = approx  # This is our approx Number Plate Contour
                break
+
+       # Drawing the selected contour on the original image
+       cv.drawContours(self.image, [self.numberPlateCnt], -1, (0, 255, 0), 3)
+       cv.imshow("Final Image With Number Plate Detected", self.image)
+
 
    def imageRead(self,fileName='Car_Image_1.jpg'):
        # Read the image file
@@ -113,6 +141,6 @@ class CarPlateDetection:
 #cv2.waitKey(0) #Wait for user input before closing the images displayed
 
 
-if __name__=='__main__':
-    cpd=CarPlateDetection()
-    cpd.start()
+#if __name__=='__main__':
+#    cpd=CarPlateDetection()
+#    cpd.start()

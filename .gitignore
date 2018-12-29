@@ -1,6 +1,9 @@
 
 # Ignore folder named .idea
 .idea/
+# Ignore copiled code
+.pyc
 
 # Ignore folder named venv
 venv/
+__pycache__/
